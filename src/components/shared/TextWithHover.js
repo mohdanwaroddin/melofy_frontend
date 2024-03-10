@@ -1,5 +1,4 @@
 
-import { Icon } from "@iconify/react";
 
 const TextWithHover = ({ iconName, displayText, active }) => {
 
