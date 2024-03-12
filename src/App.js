@@ -7,7 +7,11 @@ import HomeComponent from './routes/Home';
 import LoggedInHomeComponent from './routes/LoggedinHome';
 import UploadSong from "./routes/UploadSong";
 import MyMusic from "./routes/MyMusic";
+import Library from "./routes/Library";
 import SearchPage from "./routes/SearchPage";
+import SinglePlaylistView from "./routes/SinglePlaylistView";
+
+
 import { useCookies } from 'react-cookie';
 import songContext from './contexts/songContext';
 import { useState } from 'react';
@@ -37,8 +41,10 @@ function App() {
                 <Route path="/" element={<HelloComp />} />
                 <Route path="/home" element={<LoggedInHomeComponent />} />
                 <Route path='/myMusic' element={<MyMusic />} />
+                <Route path='/library' element={<Library />} />
                 <Route path='/search' element={<SearchPage />} />
                 <Route path='/uploadSong' element={<UploadSong />} />
+                <Route path='/playlist/:playlistId' element={<SinglePlaylistView />} />
 
                 <Route path='*' element={<Navigate to="/home" />} />
                 {/*** here we use path='*' means any other path redirected to given location.

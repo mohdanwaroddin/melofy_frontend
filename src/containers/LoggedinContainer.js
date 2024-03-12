@@ -4,10 +4,15 @@ import TextWithHover from "../components/shared/TextWithHover";
 import { Howl, Howler } from "howler";
 import { useContext, useLayoutEffect, useRef, useState } from "react";
 import songContext from "../contexts/songContext";
+import CreatePlaylistModal from "../modals/CreatePlaylistModal";
+import AddToPlaylistModal from "../modals/AddToPlaylistModal";
+import { makeAuthPOSTRequest } from "../utils/serverHelpers";
 
 
 
 const LoggedinContainer = ({ children, curActiveScreen }) => {
+    const [createPlaylistModalOpen, setCreatePlaylistModalOpen] = useState(false);
+    const [addToPlaylistModalOpen, setAddToPlaylistModalOpen] = useState(false);
 
 
     const {
@@ -34,11 +39,25 @@ const LoggedinContainer = ({ children, curActiveScreen }) => {
         changeSong(currentSong.track);
     }, [currentSong && currentSong.track]);
 
+    // To add songs into a playlist
+    const addSongToPlaylist = async (playlistId) => {
+        const songId = currentSong._id;
+
+        const payload = { playlistId, songId }
+        const response = await makeAuthPOSTRequest(
+            "/playlist/add/song",
+            payload
+        );
+        if (response._id) {
+            setAddToPlaylistModalOpen(false);
+        }
+    };
 
     const playSound = () => {
         if (!soundPlayed) {
             return;
         }
+
         soundPlayed.play();
     };
 
@@ -73,6 +92,23 @@ const LoggedinContainer = ({ children, curActiveScreen }) => {
 
     return (
         <div className="h-full w-full bg-app-black">
+            {createPlaylistModalOpen && (
+                <CreatePlaylistModal
+                    closeModal={() => {
+                        setCreatePlaylistModalOpen(false);
+                    }}
+                />
+            )}
+            {addToPlaylistModalOpen && (
+                <AddToPlaylistModal
+                    closeModal={() => {
+                        setAddToPlaylistModalOpen(false);
+
+                    }}
+                    addSongToPlaylist={addSongToPlaylist}
+                />
+            )}
+
             {/**if song is not played yet, then show only full screen, when song is played,
              * our screen should be split into 9/10 part for showing currently playing songs;
              */}
@@ -103,7 +139,7 @@ const LoggedinContainer = ({ children, curActiveScreen }) => {
                                 iconName={"icomoon-free:books"}
                                 displayText={"Library"}
                                 active={curActiveScreen === "library"}
-
+                                targetLink={"/library"}
                             />
                             <IconText
                                 iconName={"game-icons:music-spell"}
@@ -117,6 +153,9 @@ const LoggedinContainer = ({ children, curActiveScreen }) => {
                             <IconText
                                 iconName={"icon-park-solid:add"}
                                 displayText={"Create Playlist"}
+                                onClick={() => {
+                                    setCreatePlaylistModalOpen(true);
+                                }}
                             />
 
                             <IconText
@@ -170,67 +209,79 @@ const LoggedinContainer = ({ children, curActiveScreen }) => {
             </div>
             {/*****  this is playbar of song .......*/}
             {
-                currentSong &&
+                currentSong && (
 
 
-                <div className="w-full h-1/10 bg-black bg-opacity-30 text-white flex items-center px-4">
-                    <div className="w-1/4 flex items-center">
+                    <div className="w-full h-1/10 bg-black bg-opacity-30 text-white flex items-center px-4">
+                        <div className="w-1/4 flex items-center">
 
-                        <img src={currentSong.thumbnail}
-                            alt="currentSongThumbnail"
-                            className="h-14 w-14 rounded"
-                        />
-                        <div className="pl-4">
-                            <div className="text-sm hover:underline cursor-pointer">
-                                {currentSong.name}
-                            </div>
-                            <div className="text-xs text-gray-500 hover:underline cursor-pointer">
-                                {currentSong.artist.firstName + " " + currentSong.artist.lastName}
+                            <img src={currentSong.thumbnail}
+                                alt="currentSongThumbnail"
+                                className="h-14 w-14 rounded"
+                            />
+                            <div className="pl-4">
+                                <div className="text-sm hover:underline cursor-pointer">
+                                    {currentSong.name}
+                                </div>
+                                <div className="text-xs text-gray-500 hover:underline cursor-pointer">
+                                    {currentSong.artist.firstName + " " + currentSong.artist.lastName}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="w-1/2 flex justify-center h-full flex-col items-center">
-                        <div className="flex w-1/3 justify-between items-center">
-                            {/** controls........ */}
-                            <Icon icon="ph:shuffle-fill"
+                        <div className="w-1/2 flex justify-center h-full flex-col items-center">
+                            <div className="flex w-1/3 justify-between items-center">
+                                {/** controls........ */}
+                                <Icon icon="ph:shuffle-fill"
+                                    fontSize={30}
+                                    className="cursor-pointer text-gray-500 hover:text-white"
+                                />
+                                <Icon icon="mdi:skip-previous-outline"
+                                    fontSize={30}
+                                    className="cursor-pointer text-gray-500 hover:text-white"
+                                />
+                                <Icon
+                                    icon={
+                                        isPaused
+                                            ? "ic:baseline-play-circle"
+                                            : "ic:baseline-pause-circle"}
+                                    fontSize={50}
+                                    className="cursor-pointer text-gray-500 hover:text-white"
+
+                                    onClick={togglePlayPause}
+                                />
+                                <Icon icon="mdi:skip-next-outline"
+                                    fontSize={30}
+                                    className="cursor-pointer text-gray-500 hover:text-white"
+                                />
+                                <Icon icon="ic:twotone-repeat"
+                                    fontSize={30}
+                                    className="cursor-pointer text-gray-500 hover:text-white"
+                                />
+
+
+                            </div>
+
+                            <div>
+                                {/**progress bar... */}
+                            </div>
+                        </div>
+                        <div className="w-1/4 flex justify-end pr-4 space-x-4 items-center">
+                            <Icon
+                                icon="ic:round-playlist-add"
                                 fontSize={30}
-                                className="cursor-pointer text-gray-500 hover:text-white"
-                            />
-                            <Icon icon="mdi:skip-previous-outline"
-                                fontSize={30}
-                                className="cursor-pointer text-gray-500 hover:text-white"
+                                className="cursor-pointer text-gray-500 hover:text-white "
+                                onClick={() => {
+                                    setAddToPlaylistModalOpen(true);
+                                }}
                             />
                             <Icon
-                                icon={
-                                    isPaused
-                                        ? "ic:baseline-play-circle"
-                                        : "ic:baseline-pause-circle"}
-                                fontSize={50}
-                                className="cursor-pointer text-gray-500 hover:text-white"
-
-                                onClick={togglePlayPause}
+                                icon="ph:heart-bold"
+                                fontSize={25}
+                                className="cursor-pointer text-gray-500 hover:text-white "
                             />
-                            <Icon icon="mdi:skip-next-outline"
-                                fontSize={30}
-                                className="cursor-pointer text-gray-500 hover:text-white"
-                            />
-                            <Icon icon="ic:twotone-repeat"
-                                fontSize={30}
-                                className="cursor-pointer text-gray-500 hover:text-white"
-                            />
-
-
-                        </div>
-
-                        <div>
-                            {/**progress bar... */}
                         </div>
                     </div>
-                    <div className="w-1/4 flex justify-end">
-                        Hello
-                    </div>
-                </div>
-            }
+                )}
         </div>
     );
 };
