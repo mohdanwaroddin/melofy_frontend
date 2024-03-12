@@ -1,7 +1,9 @@
 import { Icon } from "@iconify/react";
 import IconText from "../components/shared/IconText";
 import TextWithHover from "../components/shared/TextWithHover";
-
+import { Howl, Howler } from "howler";
+import { useState } from "react";
+import LoggedinContainer from "../containers/LoggedinContainer";
 
 
 
@@ -86,101 +88,19 @@ const melofyPlaylistCards = [
     }
 ];
 
-
 const Home = () => {
     return (
-        <div className="h-full w-full flex">
-            {/** left panel */}
-
-            <div className="h-full w-1/5 bg-black  flex flex-col justify-between pb-10" >
-                <div>
-                    <div className="logoDiv p-6 flex" >
-                        <Icon icon="cryptocurrency-color:music" width="60" /><strong className="text-xl text-white">Melofy</strong>
-                    </div>
-                    <div className="py-5">
-                        <IconText
-                            iconName={"ep:home-filled"}
-                            displayText={"Home"}
-                            active
-
-                        />
-                        <IconText
-                            iconName={"iconamoon:search-bold"}
-                            displayText={"Search"}
-
-                        />
-                        <IconText
-                            iconName={"icomoon-free:books"}
-                            displayText={"Library"}
-                        />
-                        <IconText
-                            iconName={"game-icons:music-spell"}
-                            displayText={"My Songs"}
-                        />
-                    </div>
-                    <div className="pt-5">
-                        <IconText
-                            iconName={"icon-park-solid:add"}
-                            displayText={"Create Playlist"}
-                        />
-
-                        <IconText
-                            iconName={"flat-color-icons:like"}
-                            displayText={"Liked Songs"}
-                        />
-                    </div>
-                </div>
-                <div className="px-5">
-                    <div className="border border-gray-100 text-white w-2/5 flex px-2 py-1 rounded-full items-center justify-center hover:border-white cursor-pointer">
-                        <Icon icon="gravity-ui:globe" />
-                        <div className="ml-2 text-sm font-semibold">
-                            English
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/********* right panel ***************/}
-            <div className="h-full w-4/5 bg-app-black overflow-auto">
-                {/**Navbaar........... */}
-                <div className="navbaar w-full bg-black h-1/10 bg-opacity-30 flex items-center justify-end">
-
-                    <div className="w-1/2 flex h-full">
-                        <div className="w-2/3 flex justify-around items-center">
-                            <TextWithHover displayText={"Premium"} />
-                            <TextWithHover displayText={"Support"} />
-                            <TextWithHover displayText={"Download"} />
-                            <div className="h-1/2 border-r border-white"></div>
-
-                        </div>
-
-                        <div className="w-1/3 flex justify-around h-full items-center">
-                            <TextWithHover displayText={"Upload Song"} />
-                            <div className="bg-white w-10 h10 flex items-center justify-center rounded-full font-semibold cursor-pointer">
-                                MA
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                {/**......main containt ......... */}
-
-                <div className="content p-8 pt-0 overflow-auto">
-
-                    <PlaylistView titleText="Focus"
-                        cardsData={focusCardsData} />
-                    <PlaylistView titleText="Melofy Playlists"
-                        cardsData={melofyPlaylistCards} />
-                    <PlaylistView titleText="Sound of India"
-                        cardsData={focusCardsData} />
-
-                </div>
-
-            </div>
-        </div>
+        <LoggedinContainer curActiveScreen="home">
+            <PlaylistView titleText="Focus"
+                cardsData={focusCardsData} />
+            <PlaylistView titleText="Melofy Playlists"
+                cardsData={melofyPlaylistCards} />
+            <PlaylistView titleText="Sound of India"
+                cardsData={focusCardsData} />
+        </LoggedinContainer>
     );
-};
+}
+
 
 
 const PlaylistView = ({ titleText, cardsData }) => {
