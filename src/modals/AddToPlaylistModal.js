@@ -19,7 +19,7 @@ const AddToPlaylistModal = ({ closeModal, addSongToPlaylist }) => {
             <div className="absolute bg-black w-screen h-screen bg-opacity-50 flex justify-center items-center"
                 onClick={closeModal}
             >
-                <div className="bg-app-black w-1/3 rounded-md p-8" onClick={(e) => {
+                <div className="bg-app-black bg-opacity-90 w-1/3 rounded-md p-8" onClick={(e) => {
                     e.stopPropagation()
                 }}>
 
@@ -43,7 +43,7 @@ const AddToPlaylistModal = ({ closeModal, addSongToPlaylist }) => {
 
 const PlaylistListComponent = ({ info, addSongToPlaylist }) => {
     return (
-        <div className="bg-app-black w-full flex items-center space-x-4 hover:bg-gray-400 hover:bg-opacity-20 cursor-pointer p-3 rounded"
+        <div className="bg-app-black w-full flex items-center space-x-4 hover:bg-gray-400 hover:bg-opacity-20 transition duration-500 cursor-pointer p-3 rounded"
             onClick={() => {
                 addSongToPlaylist(info._id)
             }}

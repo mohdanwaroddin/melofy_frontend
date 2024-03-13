@@ -7,13 +7,14 @@ import songContext from "../contexts/songContext";
 import CreatePlaylistModal from "../modals/CreatePlaylistModal";
 import AddToPlaylistModal from "../modals/AddToPlaylistModal";
 import { makeAuthPOSTRequest } from "../utils/serverHelpers";
-
+import { Link } from "react-router-dom";
+import { useCookies } from 'react-cookie';
 
 
 const LoggedinContainer = ({ children, curActiveScreen }) => {
     const [createPlaylistModalOpen, setCreatePlaylistModalOpen] = useState(false);
     const [addToPlaylistModalOpen, setAddToPlaylistModalOpen] = useState(false);
-
+    const [cookie, setCookie] = useCookies(["token"]);
 
     const {
         currentSong,
@@ -113,7 +114,9 @@ const LoggedinContainer = ({ children, curActiveScreen }) => {
              * our screen should be split into 9/10 part for showing currently playing songs;
              */}
             <div className={`${currentSong ? "h-9/10" : "h-full"} w-full flex`}>
-                {/****** left panel sidebar *********/}
+
+
+                {/********************** left panel sidebar **********************************/}
 
                 <div className="h-full w-1/5 bg-black  flex flex-col justify-between pb-10" >
                     <div>
@@ -165,12 +168,27 @@ const LoggedinContainer = ({ children, curActiveScreen }) => {
                         </div>
                     </div>
                     <div className="px-5">
-                        <div className="border border-gray-100 text-white w-2/5 flex px-2 py-1 rounded-full items-center justify-center hover:border-white cursor-pointer">
+                        <div className=" border border-gray-600 hover:border-white text-white w-2/5 flex px-2 py-1 rounded-full items-center justify-center  cursor-pointer transition duration-500">
                             <Icon icon="gravity-ui:globe" />
                             <div className="ml-2 text-sm font-semibold">
                                 English
                             </div>
+
                         </div>
+                        <div className="hover:text-white pt-5">
+
+                            <IconText
+                                iconName={"ant-design:logout-outlined"}
+                                displayText={"Log Out"}
+                                onClick={() => {
+                                    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                                }}
+
+
+                            />
+
+                        </div>
+
                     </div>
                 </div>
 
@@ -189,7 +207,7 @@ const LoggedinContainer = ({ children, curActiveScreen }) => {
                             </div>
 
                             <div className="w-1/3 flex justify-around h-full items-center">
-                                <TextWithHover displayText={"Upload Song"} />
+                                <Link to="/uploadsong" > <TextWithHover displayText={"Upload Song"} /></Link>
                                 <div className="bg-white w-10 h10 flex items-center justify-center rounded-full font-semibold cursor-pointer">
                                     MA
                                 </div>
@@ -198,7 +216,7 @@ const LoggedinContainer = ({ children, curActiveScreen }) => {
                         </div>
                     </div>
 
-                    {/**......main containt ......... */}
+                    {/**....................................Main containt .......................... */}
 
                     <div className="content p-8 pt-0 overflow-auto">
 
@@ -207,7 +225,7 @@ const LoggedinContainer = ({ children, curActiveScreen }) => {
                     </div>
                 </div>
             </div>
-            {/*****  this is playbar of song .......*/}
+            {/***** .......................... this is playbar of song .......*/}
             {
                 currentSong && (
 

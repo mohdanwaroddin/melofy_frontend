@@ -9,6 +9,7 @@ import UploadSong from "./routes/UploadSong";
 import MyMusic from "./routes/MyMusic";
 import Library from "./routes/Library";
 import SearchPage from "./routes/SearchPage";
+import AllSongs from "./routes/AllSongs";
 import SinglePlaylistView from "./routes/SinglePlaylistView";
 
 
@@ -44,6 +45,8 @@ function App() {
                 <Route path='/library' element={<Library />} />
                 <Route path='/search' element={<SearchPage />} />
                 <Route path='/uploadSong' element={<UploadSong />} />
+                <Route path='/allsongs' element={<AllSongs />} />
+
                 <Route path='/playlist/:playlistId' element={<SinglePlaylistView />} />
 
                 <Route path='*' element={<Navigate to="/home" />} />
@@ -65,6 +68,8 @@ function App() {
               <Route path="/home" element={<HomeComponent />} />
               <Route path="/login" element={<LoginComponent />} />
               <Route path="/signup" element={<SignupComponent />} />
+              <Route path='/allsongs' element={<AllSongs />} />
+
               {/**same as we dont have token, then it will always bring you on login page */}
               <Route path='*' element={<Navigate to="/login" />} />
 

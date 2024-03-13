@@ -9,13 +9,14 @@ const IconText = ({ iconName, displayText, active, targetLink, onClick }) => {
             >
                 <div className="px-5 py-2">
                     <Icon icon={iconName} color={active ? "white" : "gray"}
-                        fontSize={28}
+
+                        fontSize={25}
                     />
                 </div>
 
                 <div
                     className={`${active ? "text-white" : "text-gray-400"
-                        } font-semibold hover:text-white`} >
+                        } font-semibold text-md hover:text-white transition duration-300`} >
                     {displayText}
                 </div>
             </div>
