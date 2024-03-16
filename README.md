@@ -1,3 +1,37 @@
+
+# :headphones: Melofy 
+### A Spotify-inspired Music App :cowboy_hat_face:
+#### This is my fullstack web app which I developed using MERN stack.
+## Front End: :computer:
+I used React js for building user interface with more interactivity and easiy to navigate anywhere in web app.
+For styling purpose I used TailwindCss , I used Iconify for icons.
+
+## Backend: :gear:
+With the help of Express.js and node.js I built the APIs for backend interaction , I used RESTful APIs where users requests are GET: To get the response data and POST: To write into database. This is what I learnt to make efficient APIs for backend.
+
+## Database: :file_cabinet:
+MongoDB is my dearest Database which I used to store the data related to Songs, Playlists and users. There are three collections in db: users, songs and playlists
+
+## Cloud space: :cloud:
+Cloudinary: It gives the experience like we are uploadin and fetching our songs on cloud, I personally used the Cloudinary to upload all my songs and used that uploaded cloudinary songs as tracks. This feature make it work like spotify, As we know Spotify API generally provides songs with less duration i.e 3 to 5 secs, and I wanted to make this app fully functional and enjoyable too.
+
+## Authentication: :cop: 
+I used Cookies authorization method, where I used JWT services for generating the tokens, as soon as user signed in, JWT token will be generated and that token will be stored in Cookies. when user try to logout , just that token will be removed from Cookies and session will be destroyed. 
+
+## Postman Tool: :mailbox:
+Basically it is a platform which helps us to Test the APIs , even when we don't have any front-end to send the requests we are able to examine the functionalities of APIs through Postman Tool.
+
+## Features: :rocket:
++ Authentication & account management
++ Basic play pause functionalities
++ Upload and publish own songs
++ Create playlists
++ Add songs in playlist whichever you created
++ Access to your published songs
++ Search by song name
+
+# 
+#
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
